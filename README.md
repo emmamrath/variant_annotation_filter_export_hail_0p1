@@ -23,9 +23,6 @@ This project then uses the [Hail 0.1](https://hail.is/docs/0.1/index.html) platf
 This pipeline creates intermediate files and does not remove them, so that should a subsequent processing step fail, processing can continue using the previous output's data files.  
 After these files are used in the next step after the step where they were created, they are not used again and can be manually deleted.  
 
-## Installation and configuration
-how to change all the various input parameters, for input files, reference files, vep executable, hail platform including bash profile lines  
-
 ## Flowchart of processing
 /my/cohort/before_shards/*.vcf &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ==>  
 ```
@@ -140,14 +137,13 @@ tar xzvf hg19.GERP_scores.tar.gz
 ./create_gerp_shard_vcfs_02_create_shard_vcfs.sh  
 
 ### GRCh37 fasta file
-cd data/reference_genome_hs37d5x
-Obtain the hs375dx fasta file and its indexes for GRCh37.
+cd data/reference_genome_hs37d5x  
+Obtain the GRCh37 hs375dx fasta file and its indexes for GRCh37.  
 
 ## Creating reference data from a new version of the source reference data
 The following reference data are provided with this pipeline, and are used by the pipeline to annotate variants.  
 They come from publicly available databases that are regularly updated.  
-If you want to use the latest data from these publicly available databases instead of the older versions provided with this pipeline,  
-then follow instructions below to obtain the latest version and prepare it for use by this pipeline.  
+If you want to use the latest data from these publicly available databases instead of the older versions provided with this pipeline,  then follow instructions below to obtain the latest version and prepare it for use by this pipeline.  
 
 ### Clinvar
 cd data/clinvar  
