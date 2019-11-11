@@ -4,9 +4,9 @@ Variant annotation filter export hail 0p1
 ## Overview
 This is the variant pipeline used to annotate and filter variants for downstream analyses, using [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) and [Hail 0.1](https://hail.is/docs/0.1/index.html), for the project to compare the MGRB and ISKS cohorts.  
 
-This pipeline outputs a tab-delimited file of sample variants, one line per sample per variant, with the various annotations of each variant.  
+This pipeline outputs a tab-delimited file of sample variants, one line per sample per variant, with the various annotations of each variant. The annotations are for coding exon regions. Included annotations and data for annotations are Clinvar, Cosmic, Cadd, Cato, Eigen, and Revel. Included annotations for which data must be obtained separately are Gnomad, Condel, and Swegen.  
 
-The pipeline consists of bash scripts and python2 programs. It assumes that VEP and some of its plugins and HAIL 0.1 are already installed. Input parameters to the scripts include the locations of input files, and locations of the VEP and HAIL installations.  
+The pipeline consists of bash scripts and python2 programs. It assumes that [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) and some of its plugins and [HAIL 0.1](https://hail.is/docs/0.1/index.html) are already installed. Input parameters to the scripts include the locations of input files, and locations of the [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) and [HAIL](https://hail.is/docs/0.1/index.html) installations.  
 
 Variants in this project are the germline genetic mutation SNVs recorded in a multi-sample [VCF](https://samtools.github.io/hts-specs/VCFv4.2.pdf) file.  
 * MGRB [(Medical Genome Reference Bank)](https://sgc.garvan.org.au/initiatives) data is a whole-genome data resource of 4000 healthy elderly individuals ([manuscript 1](https://www.biorxiv.org/content/10.1101/473348v1), [manuscript 2](https://www.nature.com/articles/s41431-018-0279-z)).  
@@ -16,7 +16,7 @@ Variants in this project are the germline genetic mutation SNVs recorded in a mu
 The input vcf files of this project were broken into subsets of genomic regions, called "shard" files. Thus this project assumes that it must process multiple input sharded vcfs.  
 
 ## Reference data
-For this project, [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) with various plugins is used to carry out many annotations. Thus this project assumes that a VEP installation is available.  
+For this project, [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) with various plugins is used to carry out many annotations. Thus this project assumes that a [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) installation is available.  
 This project then uses the [Hail 0.1](https://hail.is/docs/0.1/index.html) platform to load in additional annotation datasets for further annotations.  
 
 ## Temporary intermediate data
@@ -138,6 +138,10 @@ wget http://mendel.stanford.edu/sidowlab/downloads/gerp/hg19.GERP_scores.tar.gz
 tar xzvf hg19.GERP_scores.tar.gz  
 ./create_gerp_shard_vcfs_01_create_chrom_positions.sh  
 ./create_gerp_shard_vcfs_02_create_shard_vcfs.sh  
+
+### GRCh37 fasta file
+cd data/reference_genome_hs37d5x
+Obtain the hs375dx fasta file and its indexes for GRCh37.
 
 ## Creating reference data from a new version of the source reference data
 The following reference data are provided with this pipeline, and are used by the pipeline to annotate variants.  
