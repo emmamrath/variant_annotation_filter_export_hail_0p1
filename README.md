@@ -39,7 +39,7 @@ Thus this project assumes that it must process multiple input sharded vcfs.
 ## Reference data
 For this project, [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) with various plugins is used to carry out many annotations. 
 Thus this project assumes that a [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) installation is available.  
-This project then uses the [Hail 0.1](https://hail.is/docs/0.1/index.html) platform to load in additional annotation datasets for further annotations.  
+This project then uses the [Hail 0.1](https://hail.is/docs/0.1/index.html) platform to load in additional annotation datasets for further annotations, filter, and output a tab-delimited spreadsheet containing one line per variant per sample having that variant.  
 
 ## Temporary intermediate data
 This pipeline creates intermediate files and does not remove them, 
@@ -47,7 +47,7 @@ so that should a subsequent processing step fail, processing can continue using 
 After these files are used in the next step after the step where they were created, they are not used again and can be manually deleted.  
 
 ## Flowchart of processing
-/my/cohort/before_shards/\*.vcf &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ==>  
+/my/cohort/before_making_shards/\*.vcf &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ==>  
 ```
 annotate_vep_sample_variants_in_hail_00_01_extract_shards.sh
 ```
