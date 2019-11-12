@@ -47,15 +47,15 @@ so that should a subsequent processing step fail, processing can continue using 
 After these files are used in the next step after the step where they were created, they are not used again and can be manually deleted.  
 
 ## Flowchart of processing
-/my/cohort/before_shards/*.vcf &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ==>  
+/my/cohort/before_shards/\*.vcf &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ==>  
 ```
 annotate_vep_sample_variants_in_hail_00_01_extract_shards.sh
 ```
-==> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /my/cohort/shard_data/*.shard*.chrom*.pos*.vcf &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ==>  
+==> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /my/cohort/shard_data/\*.shard\*.chrom\*.pos\*.vcf &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ==>  
 ```
 annotate_vep_sample_variants_in_hail_00_02_extract_exons_from_shards.sh  
 ```
-==> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /my/cohort/shard_data_extract/*.shard*.chrom*.pos*.vcf &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ==>  
+==> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /my/cohort/shard_data_extract/\*.shard\*.chrom\*.pos\*.vcf &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ==>  
 ```
 annotate_vep_sample_variants_in_hail_00_03_extract_shards.sh
 ```
@@ -66,17 +66,17 @@ annotate_vep_sample_variants_in_hail_00_03_extract_shards.sh
 ```
 annotate_vep_sample_variants_in_hail_01_run_vep.sh
 ```
-==> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /my/cohort/data_extract_split_sorted/*.shard*.chrom*.pos*.split.sorted.vcf  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /my/cohort/data_extract_split_sorted_vep/*.shard*.chrom*.pos*.split.sorted.vep.vcf  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /my/cohort/data_extract_split_sorted_vep_reformatted/*.shard*.chrom*.pos*.split.sorted.vep_reformatted.vcf &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ==>  
+==> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /my/cohort/data_extract_split_sorted/\*.shard\*.chrom\*.pos\*.split.sorted.vcf  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /my/cohort/data_extract_split_sorted_vep/\*.shard\*.chrom\*.pos\*.split.sorted.vep.vcf  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /my/cohort/data_extract_split_sorted_vep_reformatted/\*.shard\*.chrom\*.pos\*.split.sorted.vep_reformatted.vcf &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ==>  
 ```
 annotate_vep_sample_variants_in_hail_02_run_hail.sh
 ```
-==> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /my/cohort/data_extract_split_sorted_vep_reformatted_hail/*.shard*.chrom*.pos*.split.sorted.vep_reformatted_hail.tsv &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ==>  
+==> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /my/cohort/data_extract_split_sorted_vep_reformatted_hail/\*.shard\*.chrom\*.pos\*.split.sorted.vep_reformatted_hail.tsv &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ==>  
 ```
 annotate_vep_sample_variants_in_hail_02_run_hail.sh
 ```
-==> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /my/cohort/data_extract_split_sorted_vep_reformatted_hail_extra/*.shard*.chrom*.pos*.split.sorted.vep_reformatted_hail.extra.tsv
+==> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /my/cohort/data_extract_split_sorted_vep_reformatted_hail_extra/\*.shard\*.chrom\*.pos\*.split.sorted.vep_reformatted_hail.extra.tsv
 
 ## Input parameter for pipeline steps
 The input parameters for calling the scripts in this pipeline can be seen by looking at the beginning of each script.
