@@ -78,7 +78,7 @@ annotate_vep_sample_variants_in_hail_02_run_hail.sh
 ```
 ==> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /my/cohort/data_extract_split_sorted_vep_reformatted_hail_extra/\*.shard\*.chrom\*.pos\*.split.sorted.vep_reformatted_hail.extra.tsv
 
-## Input parameter for pipeline steps
+## Input parameters for pipeline steps
 The input parameters for calling the scripts in this pipeline can be seen by looking at the beginning of each script.
 
 ### annotate_vep_sample_variants_in_hail_00_01_extract_shards.sh
@@ -132,7 +132,7 @@ Cato: data came from [http://www.mauranolab.org/CATO/](http://www.mauranolab.org
 Revel: data came from [https://sites.google.com/site/revelgenomics/downloads](https://sites.google.com/site/revelgenomics/downloads)  
 Cadd: data came from [https://cadd.gs.washington.edu/](https://cadd.gs.washington.edu/)  
 
-## Reference data used by this pipeline that needs to be download from public sites because it is not included
+## Reference data used by this pipeline that needs to be downloaded from public sites because it is not included in this repository
 The following large reference data are not provided with this pipeline, and are used by the pipeline to annotate variants.  
 They need to be downloaded as specific below.  
 
@@ -148,8 +148,8 @@ cd data/condel
 ./create_condel_vcf.sh # creates data/condel/condel_scores.vcf from fannsdb.tsv  
 
 ### Swegen
-Obtain the Swegen vcf from [https://swefreq.nbis.se/](https://swefreq.nbis.se/).  
-Convert to hail 01. vds format by running the following in [hail 0.1](https://hail.is/docs/0.1/index.html) python:  
+Obtain permission and then obtain the Swegen vcf from [https://swefreq.nbis.se/](https://swefreq.nbis.se/).  
+Convert to hail 0.1 vds format by running the following in [hail 0.1](https://hail.is/docs/0.1/index.html) python:  
 hc.import_vcf('../data/swegen/swegen_autosomes_allelefreqs.vcf').min_rep().write('../data/swegen/swegen_autosomes_allelefreqs.vds', overwrite=True)  
 
 ### Gerp
@@ -161,7 +161,7 @@ tar xzvf hg19.GERP_scores.tar.gz
 
 ### GRCh37 fasta file
 cd data/reference_genome_hs37d5x  
-Obtain the GRCh37 hs375dx fasta file and its indexes for GRCh37.  
+Obtain the GRCh37 hs375dx fasta file and its indexes.  
 
 ## Creating reference data from a new version of the source reference data
 The following reference data are provided with this pipeline, and are used by the pipeline to annotate variants.  
