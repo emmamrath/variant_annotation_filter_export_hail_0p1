@@ -2,25 +2,48 @@ Variant annotation filter export hail 0p1
 =========================================
 
 ## Overview
-This is the variant pipeline used to annotate and filter variants for downstream analyses, using [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) and [Hail 0.1](https://hail.is/docs/0.1/index.html), for the project to compare the MGRB and ISKS cohorts.  
+This is the variant pipeline used to annotate and filter variants for downstream analyses, 
+using [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) and [Hail 0.1](https://hail.is/docs/0.1/index.html), 
+for the project to compare the MGRB and ISKS cohorts.  
 
-This pipeline outputs a tab-delimited file of sample variants, one line per sample per variant, with the various annotations of each variant. The annotations are for coding exon regions. Included annotations and data for annotations are Clinvar, Cosmic, Cadd, Cato, Eigen, and Revel. Included annotations for which data must be obtained separately are Gnomad, Condel, and Swegen.  
+This pipeline outputs a tab-delimited file of sample variants, one line per sample per variant, with the various annotations of each variant. 
+The tab-delimited output is suitable for a clinician to use as a spreadsheet. 
+The annotations are carried out for all variants in the input. 
+However, the provided annotation reference files mainly contain coding exon regions and thus this pipeline annotates only coding exon regions.
+Included code for annotations and data for annotations are for Clinvar, Cosmic, Cadd, Cato, Eigen, and Revel. 
+Included code for annotations for which data must be obtained separately, due to their data being too large for github, are Gnomad, Condel, and Swegen.
+The pipeline filters output to produce only variants whose Gnomad NFE_AF < 0.001 (or have no Gnomad 2.1.1 entry).
+This filter is hard-coded in annotate_vep_sample_variants_in_hail_in_subsets_with_vep_fields_already_filled_for_all_shards.py and can be changed.  
 
-The pipeline consists of bash scripts and python2 programs. It assumes that [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) and some of its plugins and [HAIL 0.1](https://hail.is/docs/0.1/index.html) are already installed. Input parameters to the scripts include the locations of input files, and locations of the [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) and [HAIL](https://hail.is/docs/0.1/index.html) installations.  
+This pipeline consists of bash scripts and python2 programs. 
+It assumes that [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) and some of its plugins, 
+and [HAIL 0.1](https://hail.is/docs/0.1/index.html) are already installed. 
+Input parameters to the scripts include the locations of input files, 
+and locations of the [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) and [HAIL](https://hail.is/docs/0.1/index.html) installations.
+Although Hail 0.1 has a VEP annotation function, it crashes for regions close to the NANS gene, including TRIM14 gene.
+Thus this pipeline runs VEP prior to running Hail. 
+This architecture allows the latest version to VEP to be used, instead of the older version in Hail 0.1. 
+This pipeline also uses [bcftools](http://samtools.github.io/bcftools/bcftools.html).  
 
 Variants in this project are the germline genetic mutation SNVs recorded in a multi-sample [VCF](https://samtools.github.io/hts-specs/VCFv4.2.pdf) file.  
-* MGRB [(Medical Genome Reference Bank)](https://sgc.garvan.org.au/initiatives) data is a whole-genome data resource of 4000 healthy elderly individuals ([manuscript 1](https://www.biorxiv.org/content/10.1101/473348v1), [manuscript 2](https://www.nature.com/articles/s41431-018-0279-z)).  
-* ISKS [(International Sarcoma Kindred Study)](http://sarcomahelp.org/articles/sarcoma-kindred-study.html) data is a whole-genome data resource (manuscript in preparation).  
+* MGRB [(Medical Genome Reference Bank)](https://sgc.garvan.org.au/initiatives) data 
+is a whole-genome data resource of 4000 healthy elderly individuals 
+([manuscript 1](https://www.biorxiv.org/content/10.1101/473348v1), [manuscript 2](https://www.nature.com/articles/s41431-018-0279-z)).  
+* ISKS [(International Sarcoma Kindred Study)](http://sarcomahelp.org/articles/sarcoma-kindred-study.html) data 
+is a whole-genome data resource (manuscript in preparation).  
 
 ## Input data
-The input vcf files of this project were broken into subsets of genomic regions, called "shard" files. Thus this project assumes that it must process multiple input sharded vcfs.  
+The input vcf files of this project were broken into 145 subsets of genomic regions, called "shard" files. 
+Thus this project assumes that it must process multiple input sharded vcfs.  
 
 ## Reference data
-For this project, [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) with various plugins is used to carry out many annotations. Thus this project assumes that a [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) installation is available.  
+For this project, [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) with various plugins is used to carry out many annotations. 
+Thus this project assumes that a [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) installation is available.  
 This project then uses the [Hail 0.1](https://hail.is/docs/0.1/index.html) platform to load in additional annotation datasets for further annotations.  
 
 ## Temporary intermediate data
-This pipeline creates intermediate files and does not remove them, so that should a subsequent processing step fail, processing can continue using the previous output's data files.  
+This pipeline creates intermediate files and does not remove them, 
+so that should a subsequent processing step fail, processing can continue using the previous output's data files.  
 After these files are used in the next step after the step where they were created, they are not used again and can be manually deleted.  
 
 ## Flowchart of processing
