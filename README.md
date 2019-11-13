@@ -14,8 +14,8 @@ Allele frequency per variant for this input cohort is calculated.
 Annotation code and annotation data are included for Clinvar, Cosmic, Cadd, Cato, Eigen, and Revel. 
 Annotation code is included for Gnomad, Condel, and Swegen, and their data have to be obtained separately due to being too large for github.  
 Filters can optionally be specified to restrict the output. Available filters are:  
-* Gnomad NFE_AF < <provided gnomad_af_nfe filter> (or have no Gnomad 2.1.1 entry)
-* Gnomad AF < <provided gnomad_af filter> (or have no Gnomad 2.1.1 entry)
+* Gnomad NFE_AF < \<provided gnomad_af_nfe filter\> (or have no Gnomad 2.1.1 entry)
+* Gnomad AF < \<provided gnomad_af filter\> (or have no Gnomad 2.1.1 entry)
 
 This pipeline consists of bash scripts and python2 programs. 
 It assumes that [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) and some of its plugins, 
