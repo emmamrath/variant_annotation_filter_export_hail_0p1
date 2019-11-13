@@ -4,6 +4,7 @@ set -euo pipefail
 indir=$1 # "/my/cohort/shard_data"
 outdir=$2 # "/my/cohort/shard_data_extract"
 tmpdir_base=$3 # "./tmp"
+bcftools_executable=$4 # /my/bcftools/installation/bcftools/install/bin/bcftools
 
 in_exon_list="../data/UCSC_tables_GRCh37_RefSeq_genes_canonical_exons_bedtools_merged.txt"
 
@@ -44,7 +45,7 @@ for shard in {0001..0145}; do
   tmpfile="${tmpdir}"/"${infile_base}.exon_intervals.txt"
   rm -rf $tmpfile
   grep -P "${chrom_for_grep}" "$in_exon_list" | \
-    awk -v chrom="$chrom" -v startpos="$startpos" -v endpos="$endpos" 'BEGIN {FS="\t";OFS=""} (((startpos<=$2)&&(endpos>=$3))||((endpos>=$2)&&(endpos<=$3))||((startpos>=$2)&&(startpos<=$3))||((startpos>=$2)&&(endpos<=$3))) {print $1, ":", $2, "-", $3}' >> "${tmpfile}"
+    awk -v startpos="$startpos" -v endpos="$endpos" 'BEGIN {FS="\t";OFS=""} (((startpos<=$2)&&(endpos>=$3))||((endpos>=$2)&&(endpos<=$3))||((startpos>=$2)&&(startpos<=$3))||((startpos>=$2)&&(endpos<=$3))) {print $1, ":", $2, "-", $3}' >> "${tmpfile}"
 
   :>"${outfile}"
   while IFS= read -r inline; do
@@ -52,7 +53,7 @@ for shard in {0001..0145}; do
     tabix $infile $inline >> $outfile
   done < "$tmpfile"
 
-  sort -k1,1 -k2,2n -k4,4 -k5,5 "${outfile}" | uniq | cat "${in_vcf_header}" - | bgzip > "${outfile}".gz
+  sort -k1,1 -k2,2n -k4,4 -k5,5 "${outfile}" | uniq | cat "${in_vcf_header}" - | "${bcftools_executable}" sort - | bgzip > "${outfile}".gz
   tabix -p vcf "${outfile}".gz
 
 done

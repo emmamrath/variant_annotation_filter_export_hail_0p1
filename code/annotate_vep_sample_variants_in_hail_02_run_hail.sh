@@ -6,6 +6,8 @@ outdir=$3 # "/my/cohort/data_extract_split_sorted_vep_reformatted_hail" # this o
 caddlist=$4 # "list_cadd_shards.txt"
 gerplist=$5 # "list_gerp_shards.txt"
 gnomadlist=$6 # "list_gnomad_shards.txt"
+gnomad_af_nfe=$7 # provide 1.1 for no filtering by Gnomad NFE_AF
+gnomad_af=$8 # provide 1.1 for no filtering by Gnomad AF
 
 mkdir -p "${outdir}"
 
@@ -21,5 +23,5 @@ mkdir -p "${outdir}"
 # shard0001	/my/hail_databases/gerp_db/gerp.shard0001.chrom1.pos1-13077999.vcf.bgz
 # shard0002	/my/hail_databases/gerp_db/gerp.shard0002.chrom1.pos13078000-17150659.vcf.bgz
 
-python annotate_vep_sample_variants_in_hail_in_subsets_with_vep_fields_already_filled_for_all_shards.py -invcf_list "${inlist}" -cadd_list "${caddlist}" -gerp_list "${gerplist}"
+python annotate_vep_sample_variants_in_hail_in_subsets_with_vep_fields_already_filled_for_all_shards.py -gnomad_af_nfe "${gnomad_af_nfe}" -gnomad_af "${gnomad_af}" -invcf_list "${inlist}" -cadd_list "${caddlist}" -gerp_list "${gerplist}"
 

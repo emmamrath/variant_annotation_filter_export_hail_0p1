@@ -1,7 +1,7 @@
 #!/usr/bin/python
-# python annotate_vep_sample_variants_in_hail_in_subsets_with_vep_fields_already_filled_for_all_shards.py -invcf_list invcf [-inregions inregions_file] [-inregion inregion] -cadd caddfile -gerp gerpfile -gnomad gnomadfile [-size subset_size_in_lines_of_inregions_file] [-log log_file] [-start start_from_line_in_inregions_file] -tmp_hail_dir tmp_hail_dir -tmp_hail_log tmp_hail_log
+# python annotate_vep_sample_variants_in_hail_in_subsets_with_vep_fields_already_filled_for_all_shards.py -invcf_list invcf [-inregions inregions_file] [-inregion inregion] -cadd caddfile -gerp gerpfile -gnomad gnomadfile [-size subset_size_in_lines_of_inregions_file] [-log log_file] [-start start_from_line_in_inregions_file]
 
-# python annotate_vep_sample_variants_in_hail_in_subsets_with_vep_fields_already_filled_for_all_shards.py -invcf_list list_shards_for_hail.txt -cadd_list list_cadd_shards.txt -gerp_list list_gerp_shards.txt -gnomad_list list_gnomad_shards.txt  -tmp_hail_dir ./tmp_hail_dir -tmp_hail_log ./tmp_hail_log/hail.log
+# python annotate_vep_sample_variants_in_hail_in_subsets_with_vep_fields_already_filled_for_all_shards.py -invcf_list list_shards_for_hail.txt -cadd_list list_cadd_shards.txt -gerp_list list_gerp_shards.txt -gnomad_list list_gnomad_shards.txt
 
 # Read in a vcf file of a cohort containing certain genomic regions and sample, already annotated by vep . Read in a list of regions. Load them into hail.
 # For those regions, annotate the cohort vds with other annotations (vep already there), and the provided CADD file.
@@ -9,9 +9,9 @@
 # If specified, break file into subsets to process separately in hail.
 # If specified, start processing from specified middle of regions file (for when previous subsets are already processed).
 
-# The input is already annotated with VEP
-# /my/vep/installation/ensembl-vep/vep --vcf --offline --cache -dir_cache /my/vep/installation/vep_data -i /my/data/directory/my_cohort_data_extract_split/my_cohort.shard0062.chrom9.pos1-39688687.vcf.gz -o /my/data/directory/my_cohort_data_extract_split_vep/my_cohort.shard0062.chrom9.pos1-39688687.vep.vcf --everything --force_overwrite
-# python convert_vcf_vep_info_into_standard_info_fields.py -i /my/data/directory/my_cohort_data_extract_vep/my_cohort.shard0062.chrom9.pos1-39688687.vep.vcf -o /my/data/directory/my_cohort_data_extract_vep_reformatted/my_cohort.shard0062.chrom9.pos1-39688687.vep_reformatted.vcf
+# The input is already annotated with VEP:
+# /nvme/emmrat/software_various/vep_nov2017/ensembl-vep/vep --vcf --offline --cache -dir_cache /nvme/emmrat/software_various/vep_nov2017/vep_data -i ../whole_exome_extract/02_ISKS_MGRB_HC.shard0062.chrom9.pos1-39688687.whole_exome.vcf.gz -o ../whole_exome_extract_vep/02_ISKS_MGRB_HC.shard0062.chrom9.pos1-39688687.whole_exome.vep.vcf --everything --force_overwrite
+# python convert_vcf_vep_info_into_standard_info_fields.py -i ../whole_exome_extract_vep/02_ISKS_MGRB_HC.shard0062.chrom9.pos1-39688687.whole_exome.vep.vcf -o ../whole_exome_extract_vep_reformatted/02_ISKS_MGRB_HC.shard0062.chrom9.pos1-39688687.whole_exome.vep_reformatted.vcf
 
 # Example of inregions file:
 # 1:2161175-2161226
@@ -22,9 +22,9 @@
 # Y:1605762-1605813
 
 # head list_gerp_shards.txt 
-# shard0001	../data/gerp/gerp.shard0001.chrom1.pos1-13077999.vcf.bgz
-# shard0002	../data/gerp/gerp.shard0002.chrom1.pos13078000-17150659.vcf.bgz
-# shard0003	../data/derp/gerp.shard0003.chrom1.pos17150660-29953083.vcf.bgz
+# shard0001	/nvme/emmrat/ISKS_2018jan/hs37d5x/gerp_db/gerp.shard0001.chrom1.pos1-13077999.vcf.bgz
+# shard0002	/nvme/emmrat/ISKS_2018jan/hs37d5x/gerp_db/gerp.shard0002.chrom1.pos13078000-17150659.vcf.bgz
+# shard0003	/nvme/emmrat/ISKS_2018jan/hs37d5x/gerp_db/gerp.shard0003.chrom1.pos17150660-29953083.vcf.bgz
 
 
 __author__ = 'Emma M. Rath'
@@ -62,22 +62,22 @@ def read_in_whole_genome_annotation_files( hc ):
 
 	### annotations from GNOMAD
 	print 'read in annotations from GNOMAD'
-	#vds_gnomad = hc.read(['../data/gnomad/gnomad.genomes.r2.0.1.sites.combined.split.minrep.vds']) # gnomad v2.0.1
-	vds_gnomad = hc.import_vcf( '../data/gnomad/gnomad.genomes.r2.1.1.sites.vcf.bgz' ) # gnomad v2.1.1
+	#vds_gnomad = hc.read(['/nvme/emmrat/ISKS_2018jan/hs37d5x/gnomad_db/gnomad.genomes.r2.0.1.sites.combined.split.minrep.vds']) # gnomad v2.0.1
+	vds_gnomad = hc.import_vcf( '/nvme/emmrat/ISKS_2018jan/hs37d5x/gnomad_db_r2_1_1_20190823/gnomad.genomes.r2.1.1.sites.vcf.bgz' ) # gnomad v2.1.1
 
 	### annotations from Clinvar
 	print 'read in annotations from Clinvar'
-	vds_clinvar = hc.read('../data/clinvar/clinvar.vds')
-	vds_clinvarotherallele = hc.read('../data/clinvar/clinvar_other_allele_is_pathogenic.vds')
+	vds_clinvar = hc.read('/nvme/emmrat/ISKS_2018jan/hs37d5x/clinvar_20190718/clinvar_20190718.vds')
+	vds_clinvarotherallele = hc.read('/nvme/emmrat/ISKS_2018jan/hs37d5x/clinvar_20190718/clinvar_other_allele_is_pathogenic_20190718.vds')
 
 	### annotations from COSMIC
 	print 'annotations from COSMIC'
-	CosmicCodingMuts_vds = hc.read('../data/cosmic/CosmicCodingMuts.vds')
-	CosmicMutantExport_vds = hc.read('../data/cosmic/CosmicMutantExport.vds')
+	CosmicCodingMuts_vds = hc.read('/nvme/emmrat/ISKS_2018jan/hs37d5x/cosmic_db/CosmicCodingMuts.vds')
+	CosmicMutantExport_vds = hc.read('/nvme/emmrat/ISKS_2018jan/hs37d5x/cosmic_db/CosmicMutantExport.vds')
 
 	### annotations from Eigen
 	print 'read in annotations from Eigen'
-	vds_eigen = hc.read('../data/eigen/Eigen_coding.vds') # .repartition(10000)
+	vds_eigen = hc.read('/nvme/emmrat/ISKS_2018jan/hs37d5x/Eigen_hail_db/Eigen_coding_04092016.vds') # .repartition(10000)
 	vds_eigen = vds_eigen.annotate_variants_expr('''
 	    va.predictions = {Eigen: {
 		EigenRaw: va.info.EigenRaw,
@@ -88,26 +88,25 @@ def read_in_whole_genome_annotation_files( hc ):
 
 	### annotations from Condel
 	print 'read in annotations from Condel'
-	#hc.import_vcf('../data/condel/condel_scores.vcf').min_rep().write('../data/condel/condel_scores.vds', overwrite=True)
-	#vds_condel = hc.read('../data/condel/condel_scores.vds')
-	vds_condel = hc.import_vcf( '../data/condel/condel_scores.vcf' )
+	#vds_condel = hc.read('/nvme/emmrat/ISKS_2018jan/hs37d5x/condel_db/condel_scores.vds')
+	vds_condel = hc.import_vcf( '/nvme/emmrat/ISKS_2018jan/hs37d5x/condel_db/condel_scores.vcf' )
 
 	### annotations from Cato
 	print 'read in annotations from Cato'
-	vds_cato = hc.read('../data/cato/CATO_1.1.vds')
+	vds_cato = hc.read('/nvme/emmrat/ISKS_2018jan/hs37d5x/Eigen_hail_db/CATO_1.1.vds')
 
 	### annotations from SweGen
 	print 'read in annotations from SweGen'
-	vds_swegen = hc.read('../data/swegen/swegen_autosomes_allelefreqs.vds')
+	vds_swegen = hc.read('/nvme/emmrat/ISKS_2018jan/hs37d5x/swegen_hail_db/swegen_autosomes_allelefreqs.vds')
 
 	### annotations from Revel
 	print 'read in annotations from Revel'
-	vds_revel = hc.read('../data/revel/revel.vcf.vds')
+	vds_revel = hc.read('/nvme/emmrat/ISKS_2018jan/hs37d5x/revel_20190711/revel_20190711.vcf.vds')
 
 	return vds_clinvar, vds_clinvarotherallele, CosmicCodingMuts_vds, CosmicMutantExport_vds, vds_eigen, vds_condel, vds_cato, vds_swegen, vds_revel, vds_gnomad
 
 ######################################################
-def read_in_shard_annotation_files( hc, caddfile, gerpfile ):
+def read_in_shard_annotation_files( hc, caddfile, gerpfile ): # gnomadfile ):
 
 	### annotations from CADD
 	print 'read in annotations from CADD', caddfile 
@@ -119,7 +118,11 @@ def read_in_shard_annotation_files( hc, caddfile, gerpfile ):
 	#vds_gerp = hc.read(gerpfile)
 	vds_gerp = hc.import_vcf( gerpfile )
 
-	return vds_cadd, vds_gerp
+	### annotations from GNOMAD
+	# print 'read in annotations from GNOMAD', gnomadfile
+	# vds_gnomad = hc.import_vcf( gnomadfile )
+
+	return vds_cadd, vds_gerp # vds_gnomad
 
 ######################################################
 def extract_intervals_of_interests_in_cohort_vds( hc, cohort_vds, orig_inlines ):
@@ -150,9 +153,9 @@ def extract_intervals_of_interests_in_cohort_vds( hc, cohort_vds, orig_inlines )
 	return cohort_geneset_vds
 
 ######################################################
-def annotated_and_write_output( this_subset, hc, cohort_geneset_vds, outtsv, outvds, vds_gnomad, vds_clinvar, vds_clinvarotherallele, CosmicCodingMuts_vds, CosmicMutantExport_vds, vds_eigen, vds_condel, vds_cadd, vds_gerp, vds_cato, vds_swegen, vds_revel ):
+def annotate_and_write_output( this_subset, hc, cohort_geneset_vds, outtsv, outvds, vds_gnomad, vds_clinvar, vds_clinvarotherallele, CosmicCodingMuts_vds, CosmicMutantExport_vds, vds_eigen, vds_condel, vds_cadd, vds_gerp, vds_cato, vds_swegen, vds_revel, gnomad_af_nfe, gnomad_af ):
 
-	print 'annotated_and_write_output for subset', this_subset
+	print 'annotate_and_write_output for subset', this_subset
 
 	# pprint(cohort_geneset_vds.variant_schema)
 
@@ -168,7 +171,8 @@ def annotated_and_write_output( this_subset, hc, cohort_geneset_vds, outtsv, out
 
 	# These are the fields for gnomad r2.1.1
 	cohort_geneset_gnomad_vds = cohort_geneset_vds.annotate_variants_vds(vds_gnomad, expr='va.gnomad = vds.info') # gnomad v2.1.1
-	cohort_geneset_gnomad_NFElt0p05_vds = cohort_geneset_gnomad_vds.filter_variants_expr( '(va.gnomad.AF_nfe[0] < 0.001) || isMissing(va.gnomad.AF_nfe[0])' ) # gnomad v2.1.1
+	# cohort_geneset_gnomad_NFElt0p05_vds = cohort_geneset_gnomad_vds.filter_variants_expr( '(va.gnomad.AF_nfe[0] < 0.001) || isMissing(va.gnomad.AF_nfe[0])' ) # gnomad v2.1.1
+	cohort_geneset_gnomad_NFElt0p05_vds = cohort_geneset_gnomad_vds.filter_variants_expr( '( ((va.gnomad.AF_nfe[0] < ' + str(gnomad_af_nfe) + ') || isMissing(va.gnomad.AF_nfe[0])) && ((va.gnomad.AF[0] < ' + str(gnomad_af) + ') || isMissing(va.gnomad.AF[0])) )' ) # gnomad v2.1.1
 	# vds_gnomad_df = cohort_geneset_gnomad_NFElt0p05_vds.variants_table().to_pandas()
 	# vds_gnomad_df[1:5]	
 
@@ -264,16 +268,17 @@ def main():
 
 	print 'Process the arguments to this program.'
 	parser = argparse.ArgumentParser(description='Read in vcf file. Load into hail and annotate. Output as tab-delimited, one line per variant per sample.')
-	parser.add_argument('-invcf_list', action="store", dest="invcf_list", required=True, help='Tab-delimited input list, each line contains shard_id and cohort vds shard file, and outuput shard prefix. A tab-delimited file named outprefix.tsv will be produced by this projgram.')
+	parser.add_argument('-invcf_list', action="store", dest="invcf_list", required=True, help='Tab-delimited input list, each line contains shard_id and cohort vds shard file, and outuput shard prefix. A tab-delimited file named outprefix.tsv will be produced by this program.')
 	parser.add_argument('-inregions', action="store", dest="inregions", required=False, help='Input list of genomic regions')
 	parser.add_argument('-inregion', action="store", dest="inregion", required=False, help='Input genomic region') # X:1-1000000
 	parser.add_argument('-cadd_list', action="store", dest="caddfile_list", required=True, help='Tab-delimited input list, each line contains shard_id and CADD reference shard file.')
 	parser.add_argument('-gerp_list', action="store", dest="gerpfile_list", required=True, help='Tab-delimited input list, each line contains shard_id and GERP reference shard file.')
+	# parser.add_argument('-gnomad_list', action="store", dest="gnomadfile_list", required=True, help='Tab-delimited input list, each line contains shard_id and GNOMAD reference shard file.')
 	parser.add_argument('-log', action="store", dest="logfile", required=False, help='Name of program log file to record subsets processed (default is temp_python_hail_logfile.txt')
 	parser.add_argument('-size', action="store", dest="subset_size", required=False, help='Process in subsets of this many lines in the inregions file')
 	parser.add_argument('-start', action="store", dest="startrec", required=False, help='Start processing from this variant record in the inregions files')
-	parser.add_argument('-tmp_hail_dir', action="store", dest="tmp_hail_dir", required=True, help='Temporary directory for hail')
-	parser.add_argument('-tmp_hail_log', action="store", dest="tmp_hail_log", required=True, help='Temporary log file for hail')
+	parser.add_argument('-gnomad_af_nfe', action="store", dest="gnomad_af_nfe", required=False, help='Filter variants having gnomad_af_nfe less than this (defaults to 1 which means not filtered by this field)')
+	parser.add_argument('-gnomad_af', action="store", dest="gnomad_af", required=False, help='Filter variants having gnomad_af less than this (defaults to 1 which means not filtered by this field)')
 	args = parser.parse_args()
 
 	inregions = ''
@@ -281,6 +286,13 @@ def main():
 	invcf_list = str(args.invcf_list)
 	caddfile_list = str(args.caddfile_list)
 	gerpfile_list = str(args.gerpfile_list)
+	# gnomadfile_list = str(args.gnomadfile_list)
+	gnomad_af_nfe = float(1.1)
+	if (args.gnomad_af_nfe is not None):
+		gnomad_af_nfe = float(args.gnomad_af_nfe)
+	gnomad_af = float(1.1)
+	if (args.gnomad_af is not None):
+		gnomad_af = float(args.gnomad_af)
 	subset_size = 0
 	if (args.subset_size is not None):
 		subset_size = int(args.subset_size)
@@ -293,16 +305,16 @@ def main():
 	open(logfile, 'w').close() # initialise log file to be empty
 
 	# initialise hail context
-	# args.tmp_hail_dir = './tmp_hail_dir'
-	# args.tmp_hail_log = './tmp_hail_log/hail.log'
-	hc = HailContext( tmp_dir=args.tmp_hail_dir, log=args.tmp_hail_log )
+
+	hc = HailContext( tmp_dir='/nvme/emmrat/tmp_hail', log='/nvme/emmrat/tmp_hail_log/hail.log' )
 	# hc.stop()
-	# hc = HailContext( tmp_dir=args.tmp_hail_dir )
+	# hc = HailContext(tmp_dir='/nvme/emmrat/tmp_hail')
 
 	# read in the annotation files
 
 	print 'Read in the whole genome annotation files.'
 	vds_clinvar, vds_clinvarotherallele, CosmicCodingMuts_vds, CosmicMutantExport_vds, vds_eigen, vds_condel, vds_cato, vds_swegen, vds_revel, vds_gnomad = read_in_whole_genome_annotation_files( hc )
+	#vds_clinvar, vds_clinvarotherallele, CosmicCodingMuts_vds, CosmicMutantExport_vds, vds_eigen, vds_condel, vds_cato, vds_swegen, vds_revel = read_in_whole_genome_annotation_files( hc )
 
 	# Get the list of vcf shards to process
 
@@ -338,6 +350,15 @@ def main():
 		this_gerpfile = str(infields[1])
 		gerpfiles[this_shard] = this_gerpfile
 
+	#gnomadfiles = {}
+	#gnomadfile_list_file = open(gnomadfile_list, 'r')
+	#for inline in gnomadfile_list_file:
+	#	inline = inline.strip()
+	#	infields = inline.split("\t")
+	#	this_shard = str(infields[0])
+	#	this_gnomadfile = str(infields[1])
+	#	gnomadfiles[this_shard] = this_gnomadfile
+
 	for i in range( 0, len(in_shards) ):
 
 		this_shard = in_shards[i]
@@ -346,6 +367,7 @@ def main():
 		outprefix = out_prefixes[this_shard]
 		caddfile = caddfiles[this_shard]
 		gerpfile = gerpfiles[this_shard]
+		#gnomadfile = gnomadfiles[this_shard]
 
 		outprefix_start = outprefix + '.start'
 		subprocess.call(['touch', outprefix_start])
@@ -355,6 +377,7 @@ def main():
 
 		print 'Read in the sharded annotation files.'
 		vds_cadd, vds_gerp = read_in_shard_annotation_files( hc, caddfile, gerpfile )
+		#vds_cadd, vds_gerp, vds_gnomad = read_in_shard_annotation_files( hc, caddfile, gerpfile, gnomadfile )
 
 		# read in the cohort vds file of variants to be annotated
 
@@ -406,7 +429,7 @@ def main():
 						outvds = outprefix + '_SUBSET_' + str(this_subset) + '.vds'
 						print 'Processing subset', this_subset
 						cohort_geneset_vds = extract_intervals_of_interests_in_cohort_vds( hc, cohort_vds, inlines )
-						annotated_and_write_output( this_subset, hc, cohort_geneset_vds, outtsv, outvds, vds_gnomad, vds_clinvar, vds_clinvarotherallele, CosmicCodingMuts_vds, CosmicMutantExport_vds, vds_eigen, vds_condel, vds_cadd, vds_gerp, vds_cato, vds_swegen )
+						annotate_and_write_output( this_subset, hc, cohort_geneset_vds, outtsv, outvds, vds_gnomad, vds_clinvar, vds_clinvarotherallele, CosmicCodingMuts_vds, CosmicMutantExport_vds, vds_eigen, vds_condel, vds_cadd, vds_gerp, vds_cato, vds_swegen, gnomad_af_nfe, gnomad_af )
 						log_this_subset_done( logfile, this_subset, num_subsets, subset_size, start_idx, (end_idx-1), outtsv, outvds, inregions, inregion, invcf )
 			
 		else: # process the input all in one go
@@ -420,7 +443,7 @@ def main():
 			# cohort_vds.summarize().report()
 			# print 'cohort_geneset_vds'
 			# cohort_geneset_vds.summarize().report()
-			annotated_and_write_output( this_subset, hc, cohort_geneset_vds, outtsv, outvds, vds_gnomad, vds_clinvar, vds_clinvarotherallele, CosmicCodingMuts_vds, CosmicMutantExport_vds, vds_eigen, vds_condel, vds_cadd, vds_gerp, vds_cato, vds_swegen, vds_revel )
+			annotate_and_write_output( this_subset, hc, cohort_geneset_vds, outtsv, outvds, vds_gnomad, vds_clinvar, vds_clinvarotherallele, CosmicCodingMuts_vds, CosmicMutantExport_vds, vds_eigen, vds_condel, vds_cadd, vds_gerp, vds_cato, vds_swegen, vds_revel, gnomad_af_nfe, gnomad_af )
 			log_this_subset_done( logfile, 1, 1, "no subsetting", 0, len(inlines)-1, outtsv, outvds, inregions, inregion, invcf )
 
 		print 'Finished processing!'

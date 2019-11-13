@@ -10,10 +10,12 @@ This pipeline outputs a tab-delimited file of sample variants, one line per samp
 The tab-delimited output is suitable for a clinician to use as a spreadsheet. 
 The annotations are carried out for all variants in the input. 
 However, the provided annotation reference files mainly contain coding exon regions and thus this pipeline annotates only coding exon regions.
-Included code for annotations and data for annotations are for Clinvar, Cosmic, Cadd, Cato, Eigen, and Revel. 
-Included code for annotations for which data must be obtained separately, due to their data being too large for github, are Gnomad, Condel, and Swegen.
-The pipeline filters output to produce only variants whose Gnomad NFE_AF < 0.001 (or have no Gnomad 2.1.1 entry).
-This filter is hard-coded in annotate_vep_sample_variants_in_hail_in_subsets_with_vep_fields_already_filled_for_all_shards.py and can be changed.  
+Allele frequency per variant for this input cohort is calculated. 
+Annotation code and annotation data are included for Clinvar, Cosmic, Cadd, Cato, Eigen, and Revel. 
+Annotation code is included for Gnomad, Condel, and Swegen, and their data have to be obtained separately due to being too large for github.  
+Filters can optionally be specified to restrict the output. Available filters are:  
+* Gnomad NFE_AF < <provided gnomad_af_nfe filter> (or have no Gnomad 2.1.1 entry)
+* Gnomad AF < <provided gnomad_af filter> (or have no Gnomad 2.1.1 entry)
 
 This pipeline consists of bash scripts and python2 programs. 
 It assumes that [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) and some of its plugins, 
@@ -90,6 +92,7 @@ tmpdir_base=$3 # ./tmp
 indir=$1 # "/my/cohort/shard_data"  
 outdir=$2 # "/my/cohort/shard_data_extract"  
 tmpdir_base=$3 # "./tmp"  
+bcftools_executable=$4 # /my/bcftools/installation/bcftools/install/bin/bcftools
 
 ### annotate_vep_sample_variants_in_hail_00_03_extract_shards.sh
 indir=$1 # "/my/cohort/shard_data_extract"  
@@ -117,6 +120,8 @@ outdir=$3 # "/my/cohort/data_extract_split_sorted_vep_reformatted_hail" # this o
 caddlist=$4 # "list_cadd_shards.txt"  
 gerplist=$5 # "list_gerp_shards.txt"  
 gnomadlist=$6 # "list_gnomad_shards.txt"  
+gnomad_af_nfe=$7 # provide 1.1 for no filtering by Gnomad NFE_AF
+gnomad_af=$8 # provide 1.1 for no filtering by Gnomad AF
 
 ### annotate_vep_sample_variants_in_hail_03_extra_annotation.sh
 shard1=$1 # "0001"  

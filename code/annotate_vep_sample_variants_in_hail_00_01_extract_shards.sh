@@ -12,7 +12,6 @@ mkdir -p "${outdir}"
 tmpdir="${tmpdir_base}"/00_01_selectvariants
 mkdir -p "${tmpdir}"
 
-outstring=""
 while IFS= read -r inline; do
 
   IFS=$'\t' read -r -a array <<< "$inline"
