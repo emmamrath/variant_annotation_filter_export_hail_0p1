@@ -19,10 +19,11 @@ Filters can optionally be specified to restrict the output. Available filters ar
 
 This pipeline consists of bash scripts and python2 programs. 
 It assumes that [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) and some of its plugins, 
-and [HAIL 0.1](https://hail.is/docs/0.1/index.html) are already installed. 
+and [Hail 0.1](https://hail.is/docs/0.1/index.html) are already installed. 
+[Hail 0.1](https://hail.is/docs/0.1/index.html) is an open-source, scalable platform built on Apache Spark, for analysing genomic data, created by [Broad Institute](https://www.broadinstitute.org/). 
 Input parameters to the scripts include the locations of input files, 
-and locations of the [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) and [HAIL](https://hail.is/docs/0.1/index.html) installations.
-Although Hail 0.1 has a VEP annotation function, it crashes for regions close to the NANS gene, including TRIM14 gene.
+and locations of the [VEP](https://asia.ensembl.org/info/docs/tools/vep/script/index.html) and [Hail](https://hail.is/docs/0.1/index.html) installations. 
+Although Hail 0.1 has a VEP annotation function, it crashes for regions close to the NANS gene, including TRIM14 gene. 
 Thus this pipeline runs VEP prior to running Hail. 
 This architecture allows the latest version to VEP to be used, instead of the older version in Hail 0.1. 
 This pipeline also uses [bcftools](http://samtools.github.io/bcftools/bcftools.html).  
