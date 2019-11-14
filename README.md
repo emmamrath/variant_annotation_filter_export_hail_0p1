@@ -1,4 +1,4 @@
-Variant annotation filter export hail 0p1
+Variant annotation filter export Hail 0.1
 =========================================
 
 ## Overview
