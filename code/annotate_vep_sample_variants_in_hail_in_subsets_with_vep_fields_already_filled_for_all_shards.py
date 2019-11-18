@@ -429,7 +429,7 @@ def main():
 						outvds = outprefix + '_SUBSET_' + str(this_subset) + '.vds'
 						print 'Processing subset', this_subset
 						cohort_geneset_vds = extract_intervals_of_interests_in_cohort_vds( hc, cohort_vds, inlines )
-						annotate_and_write_output( this_subset, hc, cohort_geneset_vds, outtsv, outvds, vds_gnomad, vds_clinvar, vds_clinvarotherallele, CosmicCodingMuts_vds, CosmicMutantExport_vds, vds_eigen, vds_condel, vds_cadd, vds_gerp, vds_cato, vds_swegen, gnomad_af_nfe, gnomad_af )
+						annotate_and_write_output( this_subset, hc, cohort_geneset_vds, outtsv, outvds, vds_gnomad, vds_clinvar, vds_clinvarotherallele, CosmicCodingMuts_vds, CosmicMutantExport_vds, vds_eigen, vds_condel, vds_cadd, vds_gerp, vds_cato, vds_swegen, vds_revel, gnomad_af_nfe, gnomad_af )
 						log_this_subset_done( logfile, this_subset, num_subsets, subset_size, start_idx, (end_idx-1), outtsv, outvds, inregions, inregion, invcf )
 			
 		else: # process the input all in one go
